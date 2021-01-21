@@ -26,15 +26,6 @@ public class JobOffer {
         return id;
     }
 
-    public JobOffer(long id, String company, String title, JobType type, String description, int salary) {
-        this.id = id;
-        this.company = company;
-        this.title = title;
-        this.type = type;
-        this.description = description;
-        this.salary = salary;
-    }
-
     public void setId(long id) {
         this.id = id;
     }
@@ -86,5 +77,26 @@ public class JobOffer {
 
     @Column(name = "salary")
     private int salary;
+
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
+    @JoinColumn(name = "employer_id", nullable = false)
+    private Employer employer;
+
+    public JobOffer(String company, String title, JobType type, String description, int salary, Employer employer) {
+        this.company = company;
+        this.title = title;
+        this.type = type;
+        this.description = description;
+        this.salary = salary;
+        this.employer = employer;
+    }
+
+    public Employer getEmployer() {
+        return employer;
+    }
+
+    public void setEmployer(Employer employer) {
+        this.employer = employer;
+    }
 
 }
