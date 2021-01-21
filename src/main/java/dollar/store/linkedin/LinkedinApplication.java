@@ -2,6 +2,7 @@ package dollar.store.linkedin;
 
 import dollar.store.linkedin.Repositoy.JobOfferRepository;
 import dollar.store.linkedin.entities.JobOffer;
+import dollar.store.linkedin.entities.JobType;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
@@ -20,10 +21,10 @@ public class LinkedinApplication {
 
     @EventListener(ApplicationReadyEvent.class)
     public void runAfterStartup() {
-        List allJobs = this.postgre.findAll();
+        List<JobOffer> allJobs = this.postgre.findAll();
         System.out.println("curr jobs: " + allJobs.size());
 
-        JobOffer janitor = new JobOffer();
+        JobOffer janitor = new JobOffer(123, "SAP", "janitor", JobType.IT, "Be Zobi", 5);
         janitor.setCompany("SAP");
         janitor.setTitle("janitor");
 
@@ -32,6 +33,8 @@ public class LinkedinApplication {
 
         allJobs = this.postgre.findAll();
         System.out.println("curr jobs: " + allJobs.size());
+        System.out.println("persisted enum: " + allJobs.get(0).getType());
+
     }
     public static void main(String[] args) {
         SpringApplication.run(LinkedinApplication.class, args);
