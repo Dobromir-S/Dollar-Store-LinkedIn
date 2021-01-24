@@ -1,6 +1,8 @@
 package dollar.store.linkedin.entities;
 
 import javax.persistence.*;
+import java.util.Collection;
+import java.util.LinkedHashSet;
 
 @Entity
 @Table(name = "joboffer")
@@ -98,5 +100,15 @@ public class JobOffer {
     public void setEmployer(Employer employer) {
         this.employer = employer;
     }
+
+    @OneToMany(fetch = FetchType.EAGER,
+            cascade = CascadeType.ALL)
+    Collection<Employee> applicants = new LinkedHashSet<>();
+
+    public void addApplicants(Employee e){
+        applicants.add(e);
+    }
+
+    public  Collection<Employee> getApplicants(){return applicants;}
 
 }
