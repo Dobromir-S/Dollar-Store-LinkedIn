@@ -11,13 +11,13 @@ import java.util.Set;
 public class Employer {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue
     private Long id;
 
     @Column(name = "name")
     String name;
 
-    @OneToMany(mappedBy = "employer", fetch = FetchType.EAGER,
+    @OneToMany(fetch = FetchType.EAGER,
             cascade = CascadeType.ALL)
     Collection<JobOffer> listings = new LinkedHashSet<>();
 
@@ -27,6 +27,30 @@ public class Employer {
 
     public Employer() {
 
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public Collection<JobOffer> getListings() {
+        return listings;
+    }
+
+    public void setListings(Collection<JobOffer> listings) {
+        this.listings = listings;
     }
 
     @Override

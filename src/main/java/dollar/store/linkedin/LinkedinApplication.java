@@ -40,7 +40,7 @@ public class LinkedinApplication {
         Employer SAP = new Employer("SAP");
         this.companyRepo.save(SAP);
 
-        JobOffer janitor = new JobOffer( "SAP", "janitor", JobType.IT, "Be Zobi", 5, SAP);
+        JobOffer janitor = new JobOffer( "SAP", "janitor", JobType.IT, "Be Zobi", 5);
         this.postgre.save(janitor);
         SAP.addPosting(janitor);
 
@@ -53,6 +53,20 @@ public class LinkedinApplication {
         this.postgre.save(janitor);
         allJobs = this.postgre.findAll();
         System.out.println(allJobs.get(0).getApplicants().toString());
+
+        Employer ChadChad = new Employer("ChadChad");
+        JobOffer Chad = new JobOffer("ChadChad", "ChadChad", JobType.IT, "Be chad", 99999999);
+        companyRepo.save(ChadChad);
+        postgre.save(Chad);
+        ChadChad.addPosting(Chad);
+        companyRepo.save(ChadChad);
+
+        Employer basic = new Employer("basic");
+        JobOffer v = new JobOffer("basic", "basic", JobType.USELESS, "Be basic", 1);
+        companyRepo.save(basic);
+        postgre.save(v);
+        ChadChad.addPosting(v);
+        companyRepo.save(basic);
 
     }
     public static void main(String[] args) {

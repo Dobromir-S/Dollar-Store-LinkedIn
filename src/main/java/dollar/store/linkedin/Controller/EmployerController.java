@@ -13,8 +13,8 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/employee")
-public class EmployeeController {
+@RequestMapping("/employer")
+public class EmployerController {
 
         @Autowired
         private EmployeeRepository employeeRepo;
@@ -26,28 +26,36 @@ public class EmployeeController {
         private EmployerRepository companyRepo;
 
         @GetMapping(value = "/{id}")
-        public Optional<Employee> getEmployee(@PathVariable("id") Long id) {
-            return employeeRepo.findById(id);
+        public Optional<Employer> getEmployer(@PathVariable("id") Long id) {
+            return companyRepo.findById(id);
         }
 
         @DeleteMapping (value = "/{id}")
-        public void deleteEmployee(@PathVariable("id") Long id) {
-                 employeeRepo.deleteById(id);
+        public void deleteEmployer(@PathVariable("id") Long id) {
+                 companyRepo.deleteById(id);
         }
 
         @PutMapping
-        public void updateEmployee(@RequestBody Employee e) {
-                employeeRepo.save(e);
+        public void updateEmployer(@RequestBody Employer e) {
+                companyRepo.save(e);
         }
 
         @GetMapping
-        public List<Employee> findAll() {
-                return employeeRepo.findAll();
+        public List<Employer> findAll() {
+                return companyRepo.findAll();
         }
 
         @PostMapping
-        public void createEmployee(@RequestBody Employee e){
-                employeeRepo.save(e);
+        public void createEmployer(@RequestBody Employer e){
+                companyRepo.save(e);
+        }
+
+        @PostMapping(value = "/{id}")
+        public void postJob(@PathVariable("id") Long id ,@RequestBody JobOffer j){
+                Employer e = companyRepo.findById(id).get();
+                jobsRepo.save(j);
+                e.addPosting(j);
+                companyRepo.save(e);
         }
 
     }
