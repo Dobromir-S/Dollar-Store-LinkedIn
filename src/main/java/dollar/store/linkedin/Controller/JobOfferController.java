@@ -15,7 +15,6 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:8088")
 @RequestMapping("/api/jobs")
 public class JobOfferController {
 
@@ -27,6 +26,11 @@ public class JobOfferController {
 
         @Autowired
         private EmployerRepository companyRepo;
+
+        @GetMapping
+        public List<JobOffer> findAll() {
+                return jobRepo.findAll();
+        }
 
         @GetMapping(value = "/{id}")
         public Optional<JobOffer> getListing(@PathVariable("id") Long id) {
@@ -41,11 +45,6 @@ public class JobOfferController {
         @PutMapping
         public void updateJob(@RequestBody JobOffer e) {
                 jobRepo.save(e);
-        }
-        @CrossOrigin(origins = "http://localhost:8088")
-        @GetMapping
-        public List<JobOffer> findAll() {
-                return jobRepo.findAll();
         }
 
         @GetMapping(value = "/category")
@@ -64,12 +63,10 @@ public class JobOfferController {
                 Employee e = employeeRepo.findById(id).get();
                 j.addApplicants(e);
                 jobRepo.save(j);
-
         }
 
         @PostMapping
         public void createJobOffer(@RequestBody JobOffer e){
                 jobRepo.save(e);
         }
-
     }

@@ -29,8 +29,6 @@ public class LinkedinApplication {
     @Autowired
     EmployeeRepository employeeRepo;
 
-
-
     @EventListener(ApplicationReadyEvent.class)
     public void runAfterStartup() {
         List<JobOffer> allJobs = this.postgre.findAll();

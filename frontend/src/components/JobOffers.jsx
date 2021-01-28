@@ -1,15 +1,25 @@
 import React, { Component } from 'react';
+import { makeStyles } from '@material-ui/core/styles';
+import Table from '@material-ui/core/Table';
+import TableBody from '@material-ui/core/TableBody';
+import TableCell from '@material-ui/core/TableCell';
+import TableContainer from '@material-ui/core/TableContainer';
+import TableHead from '@material-ui/core/TableHead';
+import TableRow from '@material-ui/core/TableRow';
+import Paper from '@material-ui/core/Paper';
 
 const EMPLOYEE_API_BASE_URL = "http://localhost:8088/api/jobs";
 
  async function getEmployees(){
-    console.log("stuff ")
-    const response = await fetch(EMPLOYEE_API_BASE_URL);
-    const data = await response.json();
-  //   const result = [{company: "SAP", salary: "5"}]
-  // //  console.log(data)
-    console.log(data);
-    return data;
+    //const response = await fetch(EMPLOYEE_API_BASE_URL);
+    //const data = await response.json();
+
+     const result = [{"id":3,"company":"SAP","title":"janitor","type":"IT","description":"Be Zobi","salary":5,
+     "applicants":[{"id":1,"fristName":"Zobi","last_name":"McZobFace"}]},
+     {"id":5,"company":"ChadChad","title":"ChadChad","type":"IT","description":"Be chad","salary":99999999,"applicants":[]},
+     {"id":7,"company":"basic","title":"basic","type":"USELESS","description":"Be basic","salary":1,"applicants":[]}]
+
+    return result;
 }
 
 class JobOffers extends Component {
@@ -23,7 +33,6 @@ class JobOffers extends Component {
     }
 
     async componentDidMount() {
-        console.log("working")
         getEmployees().then(response => {
             this.setState({ json: response });
         });
@@ -32,29 +41,33 @@ class JobOffers extends Component {
      render() {
         return (
             <div>
-                <table>
-                    <thead>
-                    <th>First Name</th>
-                    <th>Last Name</th>
-                    </thead>
-                    <tbody>
-                    { this.state.json.map((data) => {
-                        return (
-                            <tr key={data}>
-                                <td>{data.company}</td>
-                                <td>{data.salary}</td>
-                            </tr>
-                        )
-                    })}
-                    </tbody>
-                </table>
-            </div>)
+                <TableContainer component={Paper}>
+                  <Table>
+                    <TableHead>
+                      <TableRow>
+                        <TableCell>Company</TableCell>
+                        <TableCell align="right">Title</TableCell>
+                        <TableCell align="right">Salary</TableCell>
+                        <TableCell align="right">Sphere</TableCell>
+                      </TableRow>
+                    </TableHead>
+                    <TableBody>
+                      {this.state.json.map((data) => (
+                        <TableRow key={data.title}>
+                          <TableCell component="th" scope="row">
+                            {data.company}
+                          </TableCell>
+                          <TableCell align="right">{data.title}</TableCell>
+                          <TableCell align="right">{data.salary}</TableCell>
+                          <TableCell align="right">{data.type}</TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                </TableContainer>
+            </div>
+            )
     }
 }
-
-function dostuff(state){
-    console.log(state)
-}
-
 
 export default JobOffers
