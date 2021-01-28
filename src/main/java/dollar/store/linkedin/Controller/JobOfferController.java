@@ -15,7 +15,8 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/jobs")
+@CrossOrigin(origins = "http://localhost:8088")
+@RequestMapping("/api/jobs")
 public class JobOfferController {
 
         @Autowired
@@ -41,7 +42,7 @@ public class JobOfferController {
         public void updateJob(@RequestBody JobOffer e) {
                 jobRepo.save(e);
         }
-
+        @CrossOrigin(origins = "http://localhost:8088")
         @GetMapping
         public List<JobOffer> findAll() {
                 return jobRepo.findAll();
