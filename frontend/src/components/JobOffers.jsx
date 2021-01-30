@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
+import Button from '@material-ui/core/Button';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableContainer from '@material-ui/core/TableContainer';
@@ -8,9 +9,25 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 
+interface jobOffer {
+    id: number,
+    company: string,
+    title: string,
+    type: string,
+    description: string,
+    salary: string,
+    applicants: [],
+}
+
+interface Applicant {
+    id: number,
+    fristName: string,
+    last_name: string,
+}
+
 const EMPLOYEE_API_BASE_URL = "http://localhost:8088/api/jobs";
 
- async function getEmployees(){
+async function getEmployees(){
     //const response = await fetch(EMPLOYEE_API_BASE_URL);
     //const data = await response.json();
 
@@ -23,7 +40,7 @@ const EMPLOYEE_API_BASE_URL = "http://localhost:8088/api/jobs";
 }
 
 function apply() {
-  alert("You have applied to {some-offer}!");
+    alert("You have applied to {some-offer}!");
 }
 
 class JobOffers extends Component {
@@ -53,7 +70,8 @@ class JobOffers extends Component {
                         <TableCell align="right">Title</TableCell>
                         <TableCell align="right">Salary</TableCell>
                         <TableCell align="right">Sphere</TableCell>
-                        <TableCell align="right">Actions</TableCell>
+                        <TableCell align="right">Description</TableCell>
+                        <TableCell align="right">Applicants</TableCell>
                       </TableRow>
                     </TableHead>
                     <TableBody>
@@ -65,7 +83,21 @@ class JobOffers extends Component {
                           <TableCell align="right">{data.title}</TableCell>
                           <TableCell align="right">{data.salary}</TableCell>
                           <TableCell align="right">{data.type}</TableCell>
-                          <button onClick={apply}>Apply</button>
+                          <TableCell align="right">{data.description}</TableCell>
+                          <TableCell align="right">{data.applicants.length}</TableCell>
+
+                              <Button
+                                onClick={(e) => apply(e)}
+                                style={{
+                                           color: "black",
+                                           background: "lightblue",
+                                           margin: 20,
+                                       }}
+                                buttonLabel={'Apply'}
+                              >
+                                Apply
+                            </Button>
+
                         </TableRow>
                       ))}
                     </TableBody>
