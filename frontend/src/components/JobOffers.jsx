@@ -22,6 +22,10 @@ const EMPLOYEE_API_BASE_URL = "http://localhost:8088/api/jobs";
     return result;
 }
 
+function apply() {
+  alert("You have applied to {some-offer}!");
+}
+
 class JobOffers extends Component {
 
     state = {
@@ -49,6 +53,7 @@ class JobOffers extends Component {
                         <TableCell align="right">Title</TableCell>
                         <TableCell align="right">Salary</TableCell>
                         <TableCell align="right">Sphere</TableCell>
+                        <TableCell align="right">Actions</TableCell>
                       </TableRow>
                     </TableHead>
                     <TableBody>
@@ -60,6 +65,7 @@ class JobOffers extends Component {
                           <TableCell align="right">{data.title}</TableCell>
                           <TableCell align="right">{data.salary}</TableCell>
                           <TableCell align="right">{data.type}</TableCell>
+                          <button onClick={apply}>Apply</button>
                         </TableRow>
                       ))}
                     </TableBody>
