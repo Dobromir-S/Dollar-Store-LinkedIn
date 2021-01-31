@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import Button from '@material-ui/core/Button';
+import Modal from '@material-ui/core/Modal';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableContainer from '@material-ui/core/TableContainer';
@@ -34,23 +35,30 @@ async function getEmployees(){
      const result = [{"id":3,"company":"SAP","title":"janitor","type":"IT","description":"Be Zobi","salary":5,
      "applicants":[{"id":1,"fristName":"Zobi","last_name":"McZobFace"}]},
      {"id":5,"company":"ChadChad","title":"ChadChad","type":"IT","description":"Be chad","salary":99999999,"applicants":[]},
-     {"id":7,"company":"basic","title":"basic","type":"USELESS","description":"Be basic","salary":1,"applicants":[]}]
+     {"id":7,"company":"basic","title":"basic","type":"Useless","description":"Be basic","salary":1,"applicants":[]}]
 
     return result;
 }
 
-function apply() {
-    alert("You have applied to {some-offer}!");
-}
-
 class JobOffers extends Component {
 
-    state = {
-        json: []
+    constructor() {
+        super();
+        this.openModal = this.openModal.bind(this);
+        this.closeModal = this.closeModal.bind(this);
     }
 
-    test = function (){
-        console.log(this.state.json)
+    openModal() {
+        this.setState({modalIsOpen: true});
+    }
+
+    closeModal() {
+        this.setState({modalIsOpen: false});
+    }
+
+    state = {
+        modalIsOpen: false,
+        json: []
     }
 
     async componentDidMount() {
@@ -87,13 +95,12 @@ class JobOffers extends Component {
                           <TableCell align="right">{data.applicants.length}</TableCell>
 
                               <Button
-                                onClick={(e) => apply(e)}
+                                onClick={() => this.openModal()}
                                 style={{
                                            color: "black",
                                            background: "lightblue",
                                            margin: 20,
                                        }}
-                                buttonLabel={'Apply'}
                               >
                                 Apply
                             </Button>
@@ -103,6 +110,24 @@ class JobOffers extends Component {
                     </TableBody>
                   </Table>
                 </TableContainer>
+
+                <Modal
+                    open={this.state.modalIsOpen}
+                    isOpen={this.state.modalIsOpen}
+                    onClose={this.closeModal}
+                    style={{
+                               color: "black",
+                               background: "lightblue",
+                               margin: 20,
+                           }}
+                    >
+                  <div>
+                    <h3>Apply for Job</h3>
+                    <p>First Name</p>
+                    <p>Last Name</p>
+                    <p>Phone Number</p>
+                  </div>
+                </Modal>
             </div>
             )
     }

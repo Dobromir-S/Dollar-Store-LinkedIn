@@ -5,9 +5,11 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import JobOffers from "./components/JobOffers";
+
 ReactDOM.render(
   <React.StrictMode>
-    <JobOffers />
+    <h1>Dollar Store LinkedIn</h1>
+    <JobOffers modalState />
   </React.StrictMode>,
   document.getElementById('root')
 );
