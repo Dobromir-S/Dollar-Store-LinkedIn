@@ -57,10 +57,12 @@ public class JobOfferController {
                 return (List<JobOffer>) companyRepo.findById(id).get().getListings();
         }
 
-        @PostMapping(value = "/apply/{id}/{company}")
-        public void applyToCompany(@PathVariable Long id, @PathVariable Long company) {
-                JobOffer j = jobRepo.findById(company).get();
-                Employee e = employeeRepo.findById(id).get();
+        @PostMapping(value = "/apply/{id}")
+        public void applyToCompany(@PathVariable Long id, @RequestBody Employee chad) {
+                System.out.println(chad.toString());
+                JobOffer j = jobRepo.findById(id).get();
+                Employee e = employeeRepo.save(chad);
+                jobRepo.delete(j);
                 j.addApplicants(e);
                 jobRepo.save(j);
         }

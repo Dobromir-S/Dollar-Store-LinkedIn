@@ -10,35 +10,35 @@ public class Employee {
     @GeneratedValue
     private Long id;
 
-    @Column(name = "first_name")
-    String fristName;
+    @Column(name = "firstname")
+    String firstName;
 
-    @Column(name = "last_name")
-    String last_name;
+    @Column(name = "lastname")
+    String lastName;
 
     public Long getId() {
         return id;
     }
 
     public String getFristName() {
-        return fristName;
+        return firstName;
     }
 
     public void setFristName(String fristName) {
-        this.fristName = fristName;
+        this.firstName = fristName;
     }
 
     public String getLast_name() {
-        return last_name;
+        return lastName;
     }
 
     public void setLast_name(String last_name) {
-        this.last_name = last_name;
+        this.lastName = last_name;
     }
 
     public Employee(String fristName, String last_name) {
-        this.fristName = fristName;
-        this.last_name = last_name;
+        this.firstName = fristName;
+        this.lastName = last_name;
     }
 
     public Employee() {
@@ -47,8 +47,8 @@ public class Employee {
     @Override
     public String toString() {
         return "Employee{" +
-                "fristName='" + fristName + '\'' +
-                ", last_name='" + last_name + '\'' +
+                "fristName='" + firstName + '\'' +
+                ", last_name='" + lastName + '\'' +
                 '}';
     }
 }
