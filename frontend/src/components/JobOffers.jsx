@@ -46,6 +46,9 @@ class JobOffers extends Component {
         super();
         this.openModal = this.openModal.bind(this);
         this.closeModal = this.closeModal.bind(this);
+
+        this.handleChange = this.handleChange.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this);
     }
 
     openModal() {
@@ -54,6 +57,15 @@ class JobOffers extends Component {
 
     closeModal() {
         this.setState({modalIsOpen: false});
+    }
+
+    handleChange(event) {
+        this.setState({value: event.target.value});
+    }
+
+    handleSubmit(event) {
+        alert('A name was submitted: ' + this.state.value);
+        event.preventDefault();
     }
 
     state = {
@@ -116,16 +128,31 @@ class JobOffers extends Component {
                     isOpen={this.state.modalIsOpen}
                     onClose={this.closeModal}
                     style={{
-                               color: "black",
-                               background: "lightblue",
-                               margin: 20,
+                               color: "white",
+                               background: "black",
+                               margin: 20
                            }}
                     >
                   <div>
-                    <h3>Apply for Job</h3>
-                    <p>First Name</p>
-                    <p>Last Name</p>
-                    <p>Phone Number</p>
+                      <h3>Apply for Job</h3>
+                      <form onSubmit={this.handleSubmit}>
+                        <label>
+                          First Name:
+                          <input type="text" value={this.state.value} onChange={this.handleChange} />
+                        </label>
+                        <br/>
+                        <label>
+                          Last Name:
+                          <input type="text" value={this.state.value} onChange={this.handleChange} />
+                        </label>
+                        <br/>
+                        <label>
+                          Phone:
+                          <input type="text" value={this.state.value} onChange={this.handleChange} />
+                        </label>
+                        <br/>
+                        <input type="submit" value="Submit" />
+                      </form>
                   </div>
                 </Modal>
             </div>
