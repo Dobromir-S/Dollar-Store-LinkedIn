@@ -10,22 +10,6 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 
-interface jobOffer {
-    id: number,
-    company: string,
-    title: string,
-    type: string,
-    description: string,
-    salary: string,
-    applicants: [],
-}
-
-interface Applicant {
-    id: number,
-    fristName: string,
-    last_name: string,
-}
-
 const EMPLOYEE_API_BASE_URL = "http://localhost:8088/api/jobs";
 let firstname = ''
 let lastname = ''
@@ -36,14 +20,16 @@ let sphere = ''
 let desc = ''
 let id = 1;
 
+let applicants = []
+
 async function getEmployees(){
     const response = await fetch(EMPLOYEE_API_BASE_URL);
     const result = await response.json();
 
-     // const result = [{"id":3,"company":"SAP","title":"janitor","type":"IT","description":"Be Zobi","salary":5,
-     // "applicants":[{"id":1,"fristName":"Zobi","last_name":"McZobFace"}]},
-     // {"id":5,"company":"ChadChad","title":"ChadChad","type":"IT","description":"Be chad","salary":99999999,"applicants":[]},
-     // {"id":7,"company":"basic","title":"basic","type":"Useless","description":"Be basic","salary":1,"applicants":[]}]
+//      const result = [{"id":3,"company":"SAP","title":"janitor","type":"IT","description":"Be Zobi","salary":5,
+//      "applicants":[{"id":1,"fristName":"Zobi","last_name":"McZobFace"}]},
+//      {"id":5,"company":"ChadChad","title":"ChadChad","type":"IT","description":"Be chad","salary":99999999,"applicants":[]},
+//      {"id":7,"company":"basic","title":"basic","type":"Useless","description":"Be basic","salary":1,"applicants":[]}]
 
     return result;
 }
@@ -54,13 +40,16 @@ class JobOffers extends Component {
         super();
         this.openModal = this.openModal.bind(this);
         this.openModal2 = this.openModal2.bind(this);
+
         this.closeModal = this.closeModal.bind(this);
         this.closeModal2 = this.closeModal2.bind(this);
+        this.closeApplicantsModal = this.closeApplicantsModal.bind(this);
 
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleCreate = this.handleCreate.bind(this);
 
+        this.deleteOffer = this.deleteOffer.bind(this);
     }
 
     openModal(data) {
@@ -73,12 +62,42 @@ class JobOffers extends Component {
         this.setState({modal2IsOpen: true});
     }
 
+    deleteOffer(id) {
+        const requestOptions = {
+            method: 'DELETE'
+        };
+        const response = fetch('http://localhost:8088/api/jobs/' + id, requestOptions);
+    }
+
+    showApplicants(id) {
+        const requestOptions = {
+            method: 'GET'
+        };
+        const applicants = fetch('http://localhost:8088/api/jobs/' + id, requestOptions)
+                        .then(response => response.json())
+                        .then((data) => data.applicants)
+                        .catch((error) => {
+                            console.log(error);
+                        });
+
+        console.log(applicants);
+
+        this.setState({applicantsModalIsOpen: true})
+        this.setState({applicants: applicants})
+    }
+
+    showApplicants
+
     closeModal2() {
         this.setState({modal2IsOpen: false});
     }
 
     closeModal() {
         this.setState({modalIsOpen: false});
+    }
+
+    closeApplicantsModal() {
+        this.setState({applicantsModalIsOpen: false});
     }
 
     handleChange(event) {
@@ -136,7 +155,6 @@ class JobOffers extends Component {
     }
 
     async applyToJob(){
-        console.log("test")
         const url = 'http://localhost:8088/api/jobs/apply/' + id;
         console.log(url)
         const requestOptions = {
@@ -147,11 +165,11 @@ class JobOffers extends Component {
         const response = await fetch('http://localhost:8088/api/jobs/apply/' + id, requestOptions);
     }
 
-
-
     state = {
         modalIsOpen: false,
         modal2IsOpen: false,
+        applicantsModalIsOpen: false,
+        applicants: [],
         json: [],
         test: ''
     }
@@ -203,12 +221,34 @@ class JobOffers extends Component {
                                 onClick={() => this.openModal(data)}
                                 style={{
                                            color: "white",
-                                           background: "lightblue",
+                                           background: "green",
                                            margin: 20,
                                        }}
                               >
                                 Apply
-                            </Button>
+                              </Button>
+
+                              <Button
+                                onClick={() => this.deleteOffer(data.id)}
+                                style={{
+                                           color: "white",
+                                           background: "red",
+                                           margin: 20,
+                                       }}
+                              >
+                                Retire Offer
+                              </Button>
+
+                              <Button
+                                  onClick={() => this.showApplicants(data.id)}
+                                  style={{
+                                             color: "white",
+                                             background: "blue",
+                                             margin: 20,
+                                         }}
+                                >
+                                  Show Applicants
+                              </Button>
 
                         </TableRow>
                       ))}
@@ -290,6 +330,53 @@ class JobOffers extends Component {
                             <input type="submit" value="Create" />
                         </form>
                     </div>
+                </Modal>
+
+                <Modal
+                    open={this.state.applicantsModalIsOpen}
+                    isOpen={this.state.applicantsModalIsOpen}
+                    onClose={this.closeApplicantsModal}
+                    style={{
+                               color: "white",
+                               background: "white",
+                               margin: 20
+                           }}
+                    >
+                  <div>
+                      <h3>Applicants</h3>
+                      <TableContainer component={Paper}>
+                      <Table>
+                        <TableHead>
+                          <TableRow>
+                            <TableCell align="right">First Name</TableCell>
+                            <TableCell align="right">Last Name</TableCell>
+                            <TableCell align="right">Phone</TableCell>
+                          </TableRow>
+                        </TableHead>
+                        <TableBody>
+                          {this.state.applicants.map((data) => (
+                            <TableRow key={data.firstName}>
+                              <TableCell component="th" scope="row">
+                                {data.firstName}
+                              </TableCell>
+                              <TableCell align="right">{data.lastName}</TableCell>
+                              <TableCell align="right">{data.phone}</TableCell>
+                            </TableRow>
+                          ))}
+                        </TableBody>
+                      </Table>
+                    </TableContainer>
+                      <Button
+                          onClick={() => this.closeApplicantsModal()}
+                          style={{
+                                     color: "white",
+                                     background: "lightblue",
+                                     margin: 20,
+                                 }}
+                        >
+                          Show Applicants
+                      </Button>
+                  </div>
                 </Modal>
             </div>
             )

@@ -16,6 +16,9 @@ public class Employee {
     @Column(name = "lastname")
     String lastName;
 
+    @Column(name = "phone")
+    String phone;
+
     public Long getId() {
         return id;
     }
@@ -36,9 +39,18 @@ public class Employee {
         this.lastName = last_name;
     }
 
-    public Employee(String fristName, String last_name) {
-        this.firstName = fristName;
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public Employee(String firstName, String last_name, String phone) {
+        this.firstName = firstName;
         this.lastName = last_name;
+        this.phone = phone;
     }
 
     public Employee() {
@@ -47,8 +59,9 @@ public class Employee {
     @Override
     public String toString() {
         return "Employee{" +
-                "fristName='" + firstName + '\'' +
-                ", last_name='" + lastName + '\'' +
+                "firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", phone='" + phone + '\'' +
                 '}';
     }
 }
