@@ -27,17 +27,24 @@ interface Applicant {
 }
 
 const EMPLOYEE_API_BASE_URL = "http://localhost:8088/api/jobs";
+let firstname = ''
+let lastname = ''
+let company = ''
+let title = ''
+let salary = ''
+let sphere = ''
+let desc = ''
 
 async function getEmployees(){
-    //const response = await fetch(EMPLOYEE_API_BASE_URL);
-    //const data = await response.json();
+    const response = await fetch(EMPLOYEE_API_BASE_URL);
+    const data = await response.json();
 
-     const result = [{"id":3,"company":"SAP","title":"janitor","type":"IT","description":"Be Zobi","salary":5,
-     "applicants":[{"id":1,"fristName":"Zobi","last_name":"McZobFace"}]},
-     {"id":5,"company":"ChadChad","title":"ChadChad","type":"IT","description":"Be chad","salary":99999999,"applicants":[]},
-     {"id":7,"company":"basic","title":"basic","type":"Useless","description":"Be basic","salary":1,"applicants":[]}]
+     // const result = [{"id":3,"company":"SAP","title":"janitor","type":"IT","description":"Be Zobi","salary":5,
+     // "applicants":[{"id":1,"fristName":"Zobi","last_name":"McZobFace"}]},
+     // {"id":5,"company":"ChadChad","title":"ChadChad","type":"IT","description":"Be chad","salary":99999999,"applicants":[]},
+     // {"id":7,"company":"basic","title":"basic","type":"Useless","description":"Be basic","salary":1,"applicants":[]}]
 
-    return result;
+    return data;
 }
 
 class JobOffers extends Component {
@@ -45,14 +52,27 @@ class JobOffers extends Component {
     constructor() {
         super();
         this.openModal = this.openModal.bind(this);
+        this.openModal2 = this.openModal2.bind(this);
         this.closeModal = this.closeModal.bind(this);
+        this.closeModal2 = this.closeModal2.bind(this);
 
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
+        this.handleCreate = this.handleCreate.bind(this);
+
     }
 
-    openModal() {
+    openModal(data) {
+        console.log(data)
         this.setState({modalIsOpen: true});
+    }
+
+    openModal2() {
+        this.setState({modal2IsOpen: true});
+    }
+
+    closeModal2() {
+        this.setState({modal2IsOpen: false});
     }
 
     closeModal() {
@@ -60,28 +80,97 @@ class JobOffers extends Component {
     }
 
     handleChange(event) {
-        this.setState({value: event.target.value});
+        firstname = event.target.value;
+        console.log(firstname)
+    }
+
+    handleChange2(event) {
+        lastname = event.target.value;
+        console.log(lastname);
+    }
+
+    handleCompany(event) {
+        company = event.target.value;
+    }
+
+    handleTitle(event) {
+        title = event.target.value;
+    }
+
+    handleSalary(event) {
+        salary = event.target.value;
+    }
+
+    handleSphere(event) {
+        sphere = event.target.value;
+    }
+
+    handleDesc(event) {
+        desc = event.target.value;
+    }
+
+    handleCreate(event) {
+        console.log("hey")
+        this.closeModal2();
+        this.createJob();
+        event.preventDefault();
+
+    }
+
+    createJob(){
+        console.log("test")
+        const requestOptions = {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ company: company, title: title, salary: salary, description: desc, type: sphere})
+        };
+        const response = fetch('http://localhost:8088/api/jobs', requestOptions);
     }
 
     handleSubmit(event) {
-        alert('A name was submitted: ' + this.state.value);
+        this.closeModal();
+        this.applyToJob();
         event.preventDefault();
     }
 
+    async applyToJob(){
+        console.log("test")
+        const requestOptions = {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ firstName: firstname, lastName: lastname })
+        };
+        const response = await fetch('http://localhost:8088/api/jobs', requestOptions);
+    }
+
+
+
     state = {
         modalIsOpen: false,
-        json: []
+        modal2IsOpen: false,
+        json: [],
+        test: ''
     }
 
     async componentDidMount() {
-        getEmployees().then(response => {
+        this.timer = setInterval(()=> getEmployees().then(response => {
             this.setState({ json: response });
-        });
+        }), 1000);
     }
 
      render() {
         return (
             <div>
+                <Button
+                    onClick={() => this.openModal2()}
+                    style={{
+                        color: "white",
+                        background: "lightblue",
+                        margin: 20,
+                    }}
+                >
+                    Create
+                </Button>
                 <TableContainer component={Paper}>
                   <Table>
                     <TableHead>
@@ -107,9 +196,9 @@ class JobOffers extends Component {
                           <TableCell align="right">{data.applicants.length}</TableCell>
 
                               <Button
-                                onClick={() => this.openModal()}
+                                onClick={() => this.openModal(data)}
                                 style={{
-                                           color: "black",
+                                           color: "white",
                                            background: "lightblue",
                                            margin: 20,
                                        }}
@@ -129,7 +218,7 @@ class JobOffers extends Component {
                     onClose={this.closeModal}
                     style={{
                                color: "white",
-                               background: "black",
+                               background: "white",
                                margin: 20
                            }}
                     >
@@ -148,12 +237,55 @@ class JobOffers extends Component {
                         <br/>
                         <label>
                           Phone:
-                          <input type="text" value={this.state.value} onChange={this.handleChange} />
+                          <input type="text" onChange={this.handleChange2} />
                         </label>
                         <br/>
                         <input type="submit" value="Submit" />
                       </form>
                   </div>
+                </Modal>
+
+                <Modal
+                    open={this.state.modal2IsOpen}
+                    isOpen={this.state.modal2IsOpen}
+                    onClose={this.closeModal2}
+                    style={{
+                        color: "white",
+                        background: "white",
+                        margin: 20
+                    }}
+                >
+                    <div>
+                        <h3>Create Job</h3>
+                        <form onSubmit={this.handleCreate}>
+                            <label>
+                                company:
+                                <input type="text" onChange={this.handleCompany} />
+                            </label>
+                            <br/>
+                            <label>
+                                title:
+                                <input type="text" onChange={this.handleTitle} />
+                            </label>
+                            <br/>
+                            <label>
+                                salary:
+                                <input type="text" onChange={this.handleSalary} />
+                            </label>
+                            <br/>
+                            <label>
+                                sphere:
+                                <input type="text" onChange={this.handleSphere} />
+                            </label>
+                            <br/>
+                            <label>
+                                description:
+                                <input type="text" onChange={this.handleDesc} />
+                            </label>
+                            <br/>
+                            <input type="submit" value="Create" />
+                        </form>
+                    </div>
                 </Modal>
             </div>
             )

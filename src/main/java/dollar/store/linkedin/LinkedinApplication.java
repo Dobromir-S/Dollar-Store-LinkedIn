@@ -60,10 +60,8 @@ public class LinkedinApplication {
         companyRepo.save(ChadChad);
 
         Employer basic = new Employer("basic");
-        JobOffer v = new JobOffer("basic", "basic", JobType.USELESS, "Be basic", 1);
         companyRepo.save(basic);
-        postgre.save(v);
-        ChadChad.addPosting(v);
+
         companyRepo.save(basic);
 
     }

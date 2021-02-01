@@ -67,6 +67,9 @@ public class JobOfferController {
 
         @PostMapping
         public void createJobOffer(@RequestBody JobOffer e){
+
+                System.out.println(e.toString());
+
                 jobRepo.save(e);
         }
     }

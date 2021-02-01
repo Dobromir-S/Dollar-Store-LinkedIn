@@ -74,7 +74,7 @@ public class JobOffer {
     @Enumerated(EnumType.STRING)
     private JobType type;
 
-    @Column(name = "Description")
+    @Column(name = "description")
     private String description;
 
     @Column(name = "salary")
@@ -98,4 +98,16 @@ public class JobOffer {
 
     public  Collection<Employee> getApplicants(){return applicants;}
 
+    @Override
+    public String toString() {
+        return "JobOffer{" +
+                "id=" + id +
+                ", company='" + company + '\'' +
+                ", title='" + title + '\'' +
+                ", type=" + type +
+                ", description='" + description + '\'' +
+                ", salary=" + salary +
+                ", applicants=" + applicants +
+                '}';
+    }
 }
