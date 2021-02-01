@@ -34,17 +34,18 @@ let title = ''
 let salary = ''
 let sphere = ''
 let desc = ''
+let id = 1;
 
 async function getEmployees(){
     const response = await fetch(EMPLOYEE_API_BASE_URL);
-    const data = await response.json();
+    const result = await response.json();
 
      // const result = [{"id":3,"company":"SAP","title":"janitor","type":"IT","description":"Be Zobi","salary":5,
      // "applicants":[{"id":1,"fristName":"Zobi","last_name":"McZobFace"}]},
      // {"id":5,"company":"ChadChad","title":"ChadChad","type":"IT","description":"Be chad","salary":99999999,"applicants":[]},
      // {"id":7,"company":"basic","title":"basic","type":"Useless","description":"Be basic","salary":1,"applicants":[]}]
 
-    return data;
+    return result;
 }
 
 class JobOffers extends Component {
@@ -64,6 +65,7 @@ class JobOffers extends Component {
 
     openModal(data) {
         console.log(data)
+        id = data.id;
         this.setState({modalIsOpen: true});
     }
 
@@ -135,12 +137,14 @@ class JobOffers extends Component {
 
     async applyToJob(){
         console.log("test")
+        const url = 'http://localhost:8088/api/jobs/apply/' + id;
+        console.log(url)
         const requestOptions = {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ firstName: firstname, lastName: lastname })
         };
-        const response = await fetch('http://localhost:8088/api/jobs', requestOptions);
+        const response = await fetch('http://localhost:8088/api/jobs/apply/' + id, requestOptions);
     }
 
 
