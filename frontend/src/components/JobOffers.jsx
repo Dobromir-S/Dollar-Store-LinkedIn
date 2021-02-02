@@ -11,8 +11,8 @@ import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 
 const EMPLOYEE_API_BASE_URL = "http://localhost:8088/api/jobs";
-let firstname = ''
-let lastname = ''
+let firstName = ''
+let lastName = ''
 let phone = ''
 
 let company = ''
@@ -61,7 +61,10 @@ class JobOffers extends Component {
         this.closeModal2 = this.closeModal2.bind(this);
         this.closeApplicantsModal = this.closeApplicantsModal.bind(this);
 
-        this.handleChange = this.handleChange.bind(this);
+        this.handleFirst = this.handleFirst.bind(this);
+        this.handleLast = this.handleLast.bind(this);
+        this.handlePhone = this.handlePhone.bind(this);
+
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleCreate = this.handleCreate.bind(this);
 
@@ -111,14 +114,17 @@ class JobOffers extends Component {
         this.setState({applicantsModalIsOpen: false});
     }
 
-    handleChange(event) {
-        firstname = event.target.value;
-        console.log(firstname)
+    handleFirst(event) {
+        firstName = event.target.value;
     }
 
-    handleChange2(event) {
-        lastname = event.target.value;
-        console.log(lastname);
+    handleLast(event) {
+        lastName = event.target.value;
+    }
+
+    handlePhone(event) {
+        phone = event.target.value;
+        console.log(phone);
     }
 
     handleCompany(event) {
@@ -171,7 +177,7 @@ class JobOffers extends Component {
         const requestOptions = {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ firstName: firstname, lastName: lastname })
+            body: JSON.stringify({ firstName: firstName, lastName: lastName, phone: phone })
         };
         const response = await fetch('http://localhost:8088/api/jobs/apply/' + id, requestOptions);
     }
@@ -282,17 +288,17 @@ class JobOffers extends Component {
                       <form onSubmit={this.handleSubmit}>
                         <label>
                           First Name:
-                          <input type="text" value={this.state.value} onChange={this.handleChange} />
+                          <input type="text" onChange={this.handleFirst} />
                         </label>
                         <br/>
                         <label>
                           Last Name:
-                          <input type="text" value={this.state.value} onChange={this.handleChange} />
+                          <input type="text" onChange={this.handleLast} />
                         </label>
                         <br/>
                         <label>
                           Phone:
-                          <input type="text" onChange={this.handleChange2} /> // TODO all values are the same, change it
+                          <input type="text" onChange={this.handlePhone} />
                         </label>
                         <br/>
                         <input type="submit" value="Submit" />
