@@ -23,20 +23,20 @@ public class Employee {
         return id;
     }
 
-    public String getFristName() {
+    public String getFirstName() {
         return firstName;
     }
 
-    public void setFristName(String fristName) {
+    public void setFirstName(String fristName) {
         this.firstName = fristName;
     }
 
-    public String getLast_name() {
+    public String getLastName() {
         return lastName;
     }
 
-    public void setLast_name(String last_name) {
-        this.lastName = last_name;
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
     public String getPhone() {
@@ -47,9 +47,9 @@ public class Employee {
         this.phone = phone;
     }
 
-    public Employee(String firstName, String last_name, String phone) {
+    public Employee(String firstName, String lastName, String phone) {
         this.firstName = firstName;
-        this.lastName = last_name;
+        this.lastName = lastName;
         this.phone = phone;
     }
 

@@ -13,6 +13,8 @@ import Paper from '@material-ui/core/Paper';
 const EMPLOYEE_API_BASE_URL = "http://localhost:8088/api/jobs";
 let firstname = ''
 let lastname = ''
+let phone = ''
+
 let company = ''
 let title = ''
 let salary = ''
@@ -27,11 +29,25 @@ async function getEmployees(){
     const result = await response.json();
 
 //      const result = [{"id":3,"company":"SAP","title":"janitor","type":"IT","description":"Be Zobi","salary":5,
-//      "applicants":[{"id":1,"fristName":"Zobi","last_name":"McZobFace"}]},
+//      "applicants":[{"id":1,"firstName":"Zobi","lastName":"McZobFace"}]},
 //      {"id":5,"company":"ChadChad","title":"ChadChad","type":"IT","description":"Be chad","salary":99999999,"applicants":[]},
 //      {"id":7,"company":"basic","title":"basic","type":"Useless","description":"Be basic","salary":1,"applicants":[]}]
 
     return result;
+}
+
+async function showApplicants(id) {
+    const requestOptions = {
+        method: 'GET'
+    };
+
+    const response = await fetch('http://localhost:8088/api/jobs/' + id, requestOptions);
+    const result = await response.json();
+
+    console.log(result);
+
+    this.setState({applicantsModalIsOpen: true})
+    this.setState({applicants: result.applicants})
 }
 
 class JobOffers extends Component {
@@ -69,24 +85,19 @@ class JobOffers extends Component {
         const response = fetch('http://localhost:8088/api/jobs/' + id, requestOptions);
     }
 
-    showApplicants(id) {
+    async showApplicants(id) {
         const requestOptions = {
             method: 'GET'
         };
-        const applicants = fetch('http://localhost:8088/api/jobs/' + id, requestOptions)
-                        .then(response => response.json())
-                        .then((data) => data.applicants)
-                        .catch((error) => {
-                            console.log(error);
-                        });
 
-        console.log(applicants);
+        const response = await fetch('http://localhost:8088/api/jobs/' + id, requestOptions);
+        const result = await response.json();
+
+        console.log(result);
 
         this.setState({applicantsModalIsOpen: true})
-        this.setState({applicants: applicants})
+        this.setState({applicants: result.applicants})
     }
-
-    showApplicants
 
     closeModal2() {
         this.setState({modal2IsOpen: false});
@@ -281,7 +292,7 @@ class JobOffers extends Component {
                         <br/>
                         <label>
                           Phone:
-                          <input type="text" onChange={this.handleChange2} />
+                          <input type="text" onChange={this.handleChange2} /> // TODO all values are the same, change it
                         </label>
                         <br/>
                         <input type="submit" value="Submit" />
