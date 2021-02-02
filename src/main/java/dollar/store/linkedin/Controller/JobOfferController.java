@@ -4,7 +4,6 @@ import dollar.store.linkedin.Repositoy.EmployeeRepository;
 import dollar.store.linkedin.Repositoy.EmployerRepository;
 import dollar.store.linkedin.Repositoy.JobOfferRepository;
 import dollar.store.linkedin.entities.Employee;
-import dollar.store.linkedin.entities.Employer;
 import dollar.store.linkedin.entities.JobOffer;
 import dollar.store.linkedin.entities.JobType;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -62,16 +61,13 @@ public class JobOfferController {
                 System.out.println(chad.toString());
                 JobOffer j = jobRepo.findById(id).get();
                 Employee e = employeeRepo.save(chad);
-                jobRepo.delete(j);
                 j.addApplicants(e);
                 jobRepo.save(j);
         }
 
         @PostMapping
         public void createJobOffer(@RequestBody JobOffer e){
-
                 System.out.println(e.toString());
-
                 jobRepo.save(e);
         }
     }
